@@ -1,0 +1,47 @@
+## Load dependencies
+library(openxlsx)
+
+#data.dir <- "C:\mhs_nonwork"
+
+setwd("C:/mhs_nonwork")
+
+hitters <- read.xlsx("C:/mhs_nonwork/hittersraw.xlsx")
+pitchers <- read.xlsx("C:/mhs_nonwork/pitchersraw.xlsx")
+
+## Split data apart by a grouping variable;
+##   makes a named list of tables
+
+hittersplit <- split(hitters, hitters$OTBA)
+pitchersplit <- split(pitchers, pitchers$OTBA)
+
+## Create a blank workbook
+hitterwb <- createWorkbook()
+pitcherwb <- createWorkbook()
+
+## Loop through the list of split tables as well as their names
+##   and add each one as a sheet to the workbook
+
+for (i in )
+  
+  
+  Map(function(data, name){
+    
+    addWorksheet(hitterwb, name)
+    writeData(hitterwb, name, data)
+    
+  }, hittersplit, names(hittersplit))
+
+Map(function(data, name){
+  
+  addWorksheet(pitcherwb, name)
+  writeData(pitcherwb, name, data)
+  
+}, pitchersplit, names(pitchersplit))
+
+## Save workbook to working directory
+saveWorkbook(hitterwb, file = "hitters_tabbed.xlsx", overwrite = TRUE)
+saveWorkbook(pitcherwb, file = "pitchers_tabbed.xlsx", overwrite = TRUE)
+
+write.xlsx(pitchersplit, file='other_example.xlsx')
+
+#write.xlsx(dlist, file.path(out.dir, paste0(out.file.nm, "_", Sys.Date(), ".xlsx")))
